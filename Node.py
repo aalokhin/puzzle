@@ -38,6 +38,13 @@ class Node:
                 children.append(child_node)
             # else:
             #     print("this child existed before")
+        #
+        # for i in children:
+        #     print(str(i))
+        # for j in i:
+        #             print(j, end=" ")
+        #         print("")
+        #     print('-----------')
 
         # print('================ children =====================')
         # for child in children:
@@ -76,3 +83,12 @@ class Node:
     def get_current_coordinates(self, puz, val):
         """ Specifically used to find the position of the blank space """
         return self.data_dict[val]
+
+    def __str__(self):
+        ret = ''
+        for i in self.data:
+            for j in i:
+                ret += str(j)
+                ret+=' '
+            ret += '\n'
+        return ret

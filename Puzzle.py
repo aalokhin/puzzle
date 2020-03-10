@@ -32,20 +32,23 @@ class Puzzle:
     def process(self, puzzle):
             """ Accept Start and Goal Puzzle state"""
             start = puzzle
+            iteration = 0
             start = Node(start, 0, 0, None)
             start.fval = self.f(start, self.goal)
             """ Put the start node in the open list"""
             self.open.append(start)
             print("\n\n")
             while True:
+                iteration+=1
                 cur = self.open[0]
                 self.print_result(cur)
                 """ If the difference between current and goal node is 0 we have reached the goal node"""
                 if Calculator.manhattan_distance(cur.data, self.goal_dict, self.n) == 0:
                     print('hurra we found a solutions --> heuristic manhattan -> {}'.format(cur.level))
+                    print('the step iteration {}'.format(iteration))
                     while True:
                         prev = cur.parent
-                        print(prev.data)
+                        print(prev)
                         cur = prev
                         if cur is None:
                             break
@@ -67,4 +70,7 @@ class Puzzle:
 
                 """ sort the opne list based on f value """
                 self.open.sort(key=lambda x: x.fval, reverse=False)
+                for one in self.open:
+                    print('level is{}'.format(one.level))
+                    print(str(one))
 
