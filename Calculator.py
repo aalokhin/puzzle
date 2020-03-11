@@ -26,6 +26,15 @@ class Calculator:
         #     print('current board is {}'.format(current_board))
         #     print('goal board is {}'.format(goal_board_dict))
         return distance
+    @staticmethod
+    def hamming_distance(current_board, goal_board, size):
+        misplaced_tiles = 0
+        for i in range(size):
+            for j in range(size):
+                if current_board[i][j] != goal_board[i][j]:
+                    misplaced_tiles += 1
+        return misplaced_tiles
+
 
     @staticmethod
     def h(start, goal, size):
