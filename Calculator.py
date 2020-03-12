@@ -34,15 +34,3 @@ class Calculator:
                 if current_board[i][j] != goal_board[i][j]:
                     misplaced_tiles += 1
         return misplaced_tiles
-
-
-    @staticmethod
-    def h(start, goal, size):
-        """ Calculates the different between the given puzzles """
-        temp = 0
-        for i in range(0,size):
-            for j in range(0,size):
-                if start[i][j] != goal[i][j] and start[i][j] != 0:
-                    temp += 1
-        #print('temp {}'.format(temp))
-        return temp
