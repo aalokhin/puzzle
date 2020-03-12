@@ -6,7 +6,7 @@ from Calculator import Calculator
 
 class Puzzle:
     def __init__(self, size, goal_position):
-        """ Initialize the puzzle size by the specified size,open and closed lists to empty """
+        """ open list for nodes that haven't yet been checkd on children; closed are those whose children we have added to open list """
         self.n = size
         self.open = []
         self.closed = []
@@ -14,10 +14,16 @@ class Puzzle:
         self.goal_dict = Calculator.coordinates_dictionary(goal_position) #self.coordinates_dictionary(goal_position)
 
     def f(self,start,goal):
-        """ Heuristic Function to calculate hueristic value f(x) = h(x) + g(x) """
-        #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
-        #return Calculator.hamming_distance(start.data, self.goal, self.n)
-        return Calculator.manhattan_distance(start.data, self.goal_dict, self.n)
+        """ Will need to use lambdas here Heuristic Function to calculate hueristic value f(x) = h(x) + g(x) ;
+        with f(x) = h(x) works faster for some reason , need to check """
+
+        """so far the lowest  level """
+        return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
+        """so far the best speed but something is wrong with parents """
+        #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n)
+        # return Calculator.hamming_distance(start.data, self.goal, self.n)
+        """This line will warm up your PC as if it was not a line but a whole Android studio"""
+        #return Calculator.hamming_distance(start.data, self.goal, self.n) + start.level
 
     def print_result(self, cur):
         print("")
@@ -28,7 +34,7 @@ class Puzzle:
         print(str(cur))
 
     def process(self, puzzle):
-            """ Accept Start and Goal Puzzle state"""
+            """ takes starting state and appends it to open list. the goal state has been created during initialization"""
             start = puzzle
             iteration = 0
             start = Node(start, 0, 0, None)
@@ -36,11 +42,11 @@ class Puzzle:
             """ Put the start node in the open list"""
             self.open.append(start)
             print("\n\n")
-            while True:
-                iteration+=1
+            while len(self.open) != 0:
+                iteration +=1
                 cur = self.open[0]
                 self.print_result(cur)
-                """ If the difference between current and goal node is 0 we have reached the goal node"""
+                """ If the difference between current and goal boaed is 0 we have reached the goal node"""
                 if Calculator.manhattan_distance(cur.data, self.goal_dict, self.n) == 0:
                     print('hurra we found a solutions --> heuristic manhattan -> {}'.format(cur.level))
                     print('the step iteration {}'.format(iteration))
@@ -50,17 +56,14 @@ class Puzzle:
                         cur = prev
                         if cur is None:
                             break
-
-                    break
-                if Calculator.h(cur.data, self.goal, self.n) == 0:
-                    print('hurra we found a solutions --> heuristic h ')
                     break
 
-                children = cur.generate_child(self.closed)
+                children = cur.generate_child(self.closed, self.open)
                 for i in children:
                     i.fval = self.f(i, self.goal)
                     if Calculator.manhattan_distance(i.data, Calculator.coordinates_dictionary(cur.data), self.n) != 0:
                         self.open.append(i)
+                """ moving current node to the closed list and deleting it from the open list """
 
                 self.closed.append(cur)
                 del self.open[0]
@@ -68,7 +71,3 @@ class Puzzle:
 
                 """ sort the opne list based on f value """
                 self.open.sort(key=lambda x: x.fval, reverse=False)
-                for one in self.open:
-                    print('level is{}'.format(one.level))
-                    print(str(one))
-

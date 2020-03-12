@@ -17,20 +17,24 @@ class Calculator:
         for i in range(size):
             for j in range(size):
                 lookup_val = current_board[i][j]
-                x = i
-                y = j
-                goal_x, goal_y = goal_board_dict[lookup_val]
-                distance += math.fabs(x - goal_x) + math.fabs(y - goal_y)
+                if lookup_val != 0:
+                    x = i
+                    y = j
+                    goal_x, goal_y = goal_board_dict[lookup_val]
+                    distance += math.fabs(x - goal_x) + math.fabs(y - goal_y)
+                else:
+                    continue
         #print('manhattan {}'.format(distance))
         # if distance == 0:
         #     print('current board is {}'.format(current_board))
         #     print('goal board is {}'.format(goal_board_dict))
         return distance
+
     @staticmethod
     def hamming_distance(current_board, goal_board, size):
         misplaced_tiles = 0
         for i in range(size):
             for j in range(size):
-                if current_board[i][j] != goal_board[i][j]:
+                if current_board[i][j] != goal_board[i][j] and  current_board[i][j] != 0:
                     misplaced_tiles += 1
         return misplaced_tiles

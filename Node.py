@@ -17,8 +17,19 @@ class Node:
                 return 1
         return 0
 
+    """Doesnt work yet"""
+    def check_if_child_has_duplicates_in_open_list(self, potential_child, open_nodes, size):
+        """We want to check if incase of duplicates the child's level is
+        lower of the one of nodes already in open list.
+        If child's level is higher than of the existing duplicate node - we return 1 and don't add it"""
+        for node in open_nodes:
+            if Calculator.manhattan_distance(node.data, Calculator.coordinates_dictionary(potential_child.data), size) == 0:
+                if (potential_child.level > node.level):
+                    return 1
+        return 0
 
-    def generate_child(self, parents):
+
+    def generate_child(self, parents, open_list):
         """ Generate child nodes from the given node by moving the blank space
             either in the four directions {up,down,left,right} """
         x, y = self.get_current_coordinates(self.data, 0)
@@ -35,6 +46,7 @@ class Node:
             child = self.shuffle(self.data, x, y, i[0], i[1])
             child_node = Node(child, self.level + 1, 0, self)
             if self.check_if_child_was_ever_born(child_node, parents, 3) == 0:
+               #and self.check_if_child_has_duplicates_in_open_list(child_node, open_list, 3):
                 children.append(child_node)
             # else:
             #     print("this child existed before")
