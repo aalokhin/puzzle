@@ -16,9 +16,8 @@ class Puzzle:
     def f(self,start,goal):
         """ Heuristic Function to calculate hueristic value f(x) = h(x) + g(x) """
         #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
-
-        return Calculator.hamming_distance(start.data, self.goal, self.n)
-        #return Calculator.h(start.data, self.goal, self.n)+start.level
+        #return Calculator.hamming_distance(start.data, self.goal, self.n)
+        return Calculator.manhattan_distance(start.data, self.goal_dict, self.n)
 
     def print_result(self, cur):
         print("")
