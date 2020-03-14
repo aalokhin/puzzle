@@ -16,10 +16,14 @@ class Puzzle:
     def f(self,start,goal):
         """ Will need to use lambdas here Heuristic Function to calculate hueristic value f(x) = h(x) + g(x) ;
         with f(x) = h(x) works faster for some reason , need to check """
+        """so slow"""
+        #return Calculator.euclidian_heuristic(start.data, self.goal, self.n) + start.level
+
+        return Calculator.linear_conflict(start.data, self.goal, self.n) * 2 \
+               + Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
 
         """so far the lowest  level """
-        return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
-
+        #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
         """so far the best speed but something is wrong with parents """
         #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n)
         # return Calculator.hamming_distance(start.data, self.goal, self.n)
