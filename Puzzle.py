@@ -19,6 +19,7 @@ class Puzzle:
 
         """so far the lowest  level """
         return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
+
         """so far the best speed but something is wrong with parents """
         #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n)
         # return Calculator.hamming_distance(start.data, self.goal, self.n)
@@ -42,12 +43,13 @@ class Puzzle:
             """ Put the start node in the open list"""
             self.open.append(start)
             print("\n\n")
+            """algorithm starting"""
             while len(self.open) != 0:
-                iteration +=1
+                iteration += 1
                 cur = self.open[0]
                 self.print_result(cur)
                 """ If the difference between current and goal boaed is 0 we have reached the goal node"""
-                if Calculator.manhattan_distance(cur.data, self.goal_dict, self.n) == 0:
+                if cur == self.goal:
                     print('hurra we found a solutions --> heuristic manhattan -> {}'.format(cur.level))
                     print('the step iteration {}'.format(iteration))
                     while True:
@@ -57,17 +59,17 @@ class Puzzle:
                         if cur is None:
                             break
                     break
-
+                print('Length of open before {}'.format(len(self.open)))
                 children = cur.generate_child(self.closed, self.open)
+                print('Length of open after {}'.format(len(self.open)))
+
                 for i in children:
                     i.fval = self.f(i, self.goal)
-                    if Calculator.manhattan_distance(i.data, Calculator.coordinates_dictionary(cur.data), self.n) != 0:
-                        self.open.append(i)
+                    self.open.append(i)
                 """ moving current node to the closed list and deleting it from the open list """
 
                 self.closed.append(cur)
                 del self.open[0]
 
-
-                """ sort the opne list based on f value """
+                """ sort the open list based on the  value of our heuristic function"""
                 self.open.sort(key=lambda x: x.fval, reverse=False)
