@@ -23,10 +23,12 @@ class Puzzle:
         linear = Calculator.linear_conflict(start.data, self.goal, self.n)
         mylinear = 0
         mylinear = Calculator.linear_conflict_efficient(start.data, self.goal_dict, self.n)
-
         f = linear * 2 + Calculator.manhattan_distance(start.data, self.goal_dict, self.n) #+ start.level
 
-        print("Linear conflict is: {}".format(linear ))
+
+       # f = Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
+
+        print("Linear conflict is: {}".format(linear))
         print("my Linear conflict is: {}".format(mylinear))
 
 

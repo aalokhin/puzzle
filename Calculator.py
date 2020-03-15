@@ -9,14 +9,14 @@ class Calculator:
     @staticmethod
     def euclidian_heuristic(current_board, goal_raw, size):
         distance = 0
-        current = Calculator.flatten_2d(current_board)
-        goal = Calculator.coordinates_tuple(goal_raw)
+        current = MyList(current_board).flatten()
+        goal = MyList(goal_raw).coordinates_tuple()
         for i in range(size):
             for j in range(size):
                 pos = i * size + j
                 if current[pos] != 0:
                     value = current[pos]
-                    print( "value{}".format(value))
+                    print("value{}".format(value))
                     pos_in_model = goal[value]
                     dx = pos_in_model % size - pos % size
                     dy = math.floor(pos_in_model / size) - math.floor(pos / size)
@@ -28,6 +28,16 @@ class Calculator:
         if (a >= 0 and b >= 0) or (a <= 0 and b <= 0):
             return False
         return True
+
+    @staticmethod
+    def linear_conflict_efficient(current_board, goal_dict, size):
+        number_of_conflicts = 0
+        iterations = int(math.pow(size, 2))
+        current_list = MyList(current_board).flatten()
+        print("cur cur >>> {}".format(current_list))
+
+        
+        return 0
 
     @staticmethod
     def linear_conflict(current_board, goal_raw, size):
@@ -56,32 +66,17 @@ class Calculator:
                     j += size
         return conflict
 
-    @staticmethod
-    def linear_conflict_efficient(current_board, goal_dict, size):
-        number_of_conflicts = 0
-        iterations = int(math.pow(size, 2))
-        current_list = MyList(current_board).flatten()
 
-        print("cur cur >>> {}".format(current_list))
-        return 0
 
     @staticmethod
     def manhattan_distance(current_board, goal_board_dict, size):
         distance = 0
-        for i in range(size):
-            for j in range(size):
-                lookup_val = current_board[i][j]
+        for x in range(size):
+            for y in range(size):
+                lookup_val = current_board[x][y]
                 if lookup_val != 0:
-                    x = i
-                    y = j
                     goal_x, goal_y = goal_board_dict[lookup_val]
                     distance += math.fabs(x - goal_x) + math.fabs(y - goal_y)
-                else:
-                    continue
-        # print('manhattan {}'.format(distance))
-        # if distance == 0:
-        #     print('current board is {}'.format(current_board))
-        #     print('goal board is {}'.format(goal_board_dict))
         return distance
 
     @staticmethod

@@ -42,9 +42,12 @@ class Node:
                 print("this child never existed before")
                 children.append(child_node)
             elif child_node in open_list:
+                print("this child exists in the open lise")
                 if level_is_lower(child_node, open_list):
-                    print("this child existed before")
                     children.append(child_node)
+                else:
+                    print("we won't add it as it's level is higher than one of the ")
+
             else:
                 print("this child existed before")
         # print('================ children =====================')

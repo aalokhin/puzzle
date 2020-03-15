@@ -1,5 +1,6 @@
 import math
 
+
 class Reader:
 
     def parse_file(self, filepath):
