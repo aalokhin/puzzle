@@ -1,4 +1,5 @@
 from Calculator import Calculator
+from Utils import *
 
 """these functions are here just because i am not sure hwo to structure this stuff yet"""
 
@@ -17,7 +18,7 @@ class Node:
     def __init__(self, data, level, fval, parent):
         """ Initialize the node with the data, level of the node and the calculated fvalue """
         self.data = data
-        self.data_dict = Calculator.coordinates_dictionary(data)
+        self.data_dict = MyList(data).coordinates_dictionary()
         self.level = level
         self.fval = fval
         self.parent = parent
@@ -27,14 +28,14 @@ class Node:
             either in the four directions {up,down,left,right} """
         x, y = self.get_current_coordinates(self.data, 0)
         # print('x->{} y ->{}'.format(x, y))
-        """ val_list contains position values for moving the blank space in either of
+        """ coordinates_list contains position values for moving the blank space in either of
             the 4 directions [up,down,left,right] respectively. """
-        val_list = [[x, y - 1], [x, y + 1], [x - 1, y], [x + 1, y]]
-        for i in val_list:
+        coordinates_list = [[x, y - 1], [x, y + 1], [x - 1, y], [x + 1, y]]
+        for i in coordinates_list:
             if i[0] < 0 or i[0] >= len(self.data) or i[1] < 0 or i[1] >= len(self.data):
-                val_list.remove(i)
+                coordinates_list.remove(i)
         children = []
-        for i in val_list:
+        for i in coordinates_list:
             child = self.shuffle(x, y, i[0], i[1])
             child_node = Node(child, self.level + 1, 0, self)
             if not (child_node in parents) and not (child_node in open_list):

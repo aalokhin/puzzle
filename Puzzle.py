@@ -1,6 +1,7 @@
 import math
 
 from Node import Node
+from Utils import *
 from Calculator import Calculator
 
 
@@ -11,16 +12,27 @@ class Puzzle:
         self.open = []
         self.closed = []
         self.goal = goal_position
-        self.goal_dict = Calculator.coordinates_dictionary(goal_position) #self.coordinates_dictionary(goal_position)
+        self.goal_dict = MyList(goal_position).coordinates_dictionary() #self.coordinates_dictionary(goal_position)
 
-    def f(self,start,goal):
+    def f(self, start):
         """ Will need to use lambdas here Heuristic Function to calculate hueristic value f(x) = h(x) + g(x) ;
         with f(x) = h(x) works faster for some reason , need to check """
         """so slow"""
         #return Calculator.euclidian_heuristic(start.data, self.goal, self.n) + start.level
 
-        return Calculator.linear_conflict(start.data, self.goal, self.n) * 2 \
-               + Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
+        linear = Calculator.linear_conflict(start.data, self.goal, self.n)
+        mylinear = 0
+        mylinear = Calculator.linear_conflict_efficient(start.data, self.goal_dict, self.n)
+
+        f = linear * 2 + Calculator.manhattan_distance(start.data, self.goal_dict, self.n) #+ start.level
+
+        print("Linear conflict is: {}".format(linear ))
+        print("my Linear conflict is: {}".format(mylinear))
+
+
+        #print("My linear conflict is: {}".format(Calculator.linear_conflict_efficient(start.data, self.goal_dict, self.n)))
+
+        return f
 
         """so far the lowest  level """
         #return Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
@@ -43,7 +55,7 @@ class Puzzle:
             start = puzzle
             iteration = 0
             start = Node(start, 0, 0, None)
-            start.fval = self.f(start, self.goal)
+            start.fval = self.f(start)
             """ Put the start node in the open list"""
             self.open.append(start)
             print("\n\n")
@@ -54,7 +66,7 @@ class Puzzle:
                 self.print_result(cur)
                 """ If the difference between current and goal boaed is 0 we have reached the goal node"""
                 if cur == self.goal:
-                    print('hurra we found a solutions --> heuristic manhattan -> {}'.format(cur.level))
+                    print('hurra we found a solutions --> heuristic is .... -> {}'.format(cur.level))
                     print('the step iteration {}'.format(iteration))
                     while True:
                         prev = cur.parent
@@ -68,7 +80,7 @@ class Puzzle:
                 print('Length of open after {}'.format(len(self.open)))
 
                 for i in children:
-                    i.fval = self.f(i, self.goal)
+                    i.fval = self.f(i)
                     self.open.append(i)
                 """ moving current node to the closed list and deleting it from the open list """
 

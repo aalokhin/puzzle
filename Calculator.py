@@ -1,40 +1,15 @@
 import math
 
+from Utils import *
+
 
 class Calculator:
-    @staticmethod
-    def coordinates_dictionary(board):
-        coordinates_board = {}
-        for x, row in enumerate(board):
-            for y, value in enumerate(row):
-                coordinates_board[value] = (x, y)
-        # print("here we go {} ".format(coordinates_board))
-        return coordinates_board
-
-    @staticmethod
-    def coordinates_tuple(board):
-        coordinates_board = {}
-        iter = 0
-        for x, row in enumerate(board):
-            for y, value in enumerate(row):
-                coordinates_board[value] = iter
-                iter+=1
-        return coordinates_board
-
-    @staticmethod
-    def to_one_d_array(board):
-        tuple = []
-        for x, row in enumerate(board):
-            for y, value in enumerate(row):
-               tuple.append(board[x][y])
-        # print("here we go {} ".format(coordinates_board))
-        return tuple
 
     """like manhattan but hundred times slowe plus needs refactoring"""
     @staticmethod
     def euclidian_heuristic(current_board, goal_raw, size):
         distance = 0
-        current = Calculator.to_one_d_array(current_board)
+        current = Calculator.flatten_2d(current_board)
         goal = Calculator.coordinates_tuple(goal_raw)
         for i in range(size):
             for j in range(size):
@@ -57,8 +32,10 @@ class Calculator:
     @staticmethod
     def linear_conflict(current_board, goal_raw, size):
         conflict = 0
-        current = Calculator.to_one_d_array(current_board)
-        goal = Calculator.coordinates_tuple(goal_raw)
+
+        current = MyList(current_board).flatten()
+        goal = MyList(goal_raw).coordinates_tuple()
+
         sqr_size = int(math.pow(size, 2))
         for i in range(sqr_size):
             if i / size == goal[current[i]] / size and current[i] != 0:
@@ -78,6 +55,15 @@ class Calculator:
                             conflict += 1
                     j += size
         return conflict
+
+    @staticmethod
+    def linear_conflict_efficient(current_board, goal_dict, size):
+        number_of_conflicts = 0
+        iterations = int(math.pow(size, 2))
+        current_list = MyList(current_board).flatten()
+
+        print("cur cur >>> {}".format(current_list))
+        return 0
 
     @staticmethod
     def manhattan_distance(current_board, goal_board_dict, size):
