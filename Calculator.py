@@ -30,42 +30,33 @@ class Calculator:
         return True
 
     @staticmethod
-    def linear_conflict_efficient(current_board, goal_dict, size):
+    def count_linear_conflict(current_board, goal_raw, size):
         number_of_conflicts = 0
-        iterations = int(math.pow(size, 2))
-        current_list = MyList(current_board).flatten()
-        print("cur cur >>> {}".format(current_list))
-
-        
-        return 0
-
-    @staticmethod
-    def linear_conflict(current_board, goal_raw, size):
-        conflict = 0
-
+        sqr_size = int(math.pow(size, 2))
         current = MyList(current_board).flatten()
         goal = MyList(goal_raw).coordinates_tuple()
-
-        sqr_size = int(math.pow(size, 2))
         for i in range(sqr_size):
-            if i / size == goal[current[i]] / size and current[i] != 0:
-                j = 1
-                while (j + i % size < size):
-                    if (i + j) / size == goal[current[i + j]] / size and current[i + j] != 0 and current[i] != 0:
-                        if Calculator.different_sign(j, goal[current[i + j]] % size - goal[
-                            current[i]] % size):
-                            conflict += 1
-                    j += 1
-            if i % size == goal[current[i]] % size and current[i] != 0:
-                j = size
-                while ((j + i) / size < size):
-                    if (i + j) % size == goal[current[i + j]] % size and current[i + j] != 0 and current[i] != 0:
-                        if Calculator.different_sign(j, goal[current[i + j]] / size - goal[
-                            current[i]] / size):
-                            conflict += 1
-                    j += size
-        return conflict
+            value_to_check = current[i]
+            if value_to_check != 0:
+                if i / size == goal[value_to_check] / size:
+                    j = 1
+                    while (j + i % size < size):
+                        if (i + j) / size == goal[current[i + j]] / size and current[i + j] != 0 and current[i] != 0:
+                            if Calculator.different_sign(j, goal[current[i + j]] % size - goal[current[i]] % size):
+                                number_of_conflicts += 1
+                        j += 1
+                if i % size == goal[value_to_check] % size:
+                    j = size
+                    while ((j + i) / size < size):
+                        if (i + j) % size == goal[current[i + j]] % size and current[i + j] != 0 and current[i] != 0:
+                            if Calculator.different_sign(j, goal[current[i + j]] / size - goal[current[i]] / size):
+                                number_of_conflicts += 1
+                        j += size
 
+        if number_of_conflicts != 0:
+            print("my linear conflict is: \n{} \n{}".format(current_board, goal_raw))
+
+        return number_of_conflicts
 
 
     @staticmethod
@@ -87,3 +78,34 @@ class Calculator:
                 if current_board[i][j] != goal_board[i][j] and current_board[i][j] != 0:
                     misplaced_tiles += 1
         return misplaced_tiles
+
+    # @staticmethod
+    # def linear_conflict(current_board, goal_raw, size):
+    #     conflict = 0
+    #
+    #     current = MyList(current_board).flatten()
+    #     goal = MyList(goal_raw).coordinates_tuple()
+    #
+    #     sqr_size = int(math.pow(size, 2))
+    #     for i in range(sqr_size):
+    #         # print(" i / size is {} and goal[cur[i]] / size is {} ".format((i / size), (goal[current[i]] / size)))
+    #
+    #         if i / size == goal[current[i]] / size and current[i] != 0:
+    #             j = 1
+    #             while (j + i % size < size):
+    #                 if (i + j) / size == goal[current[i + j]] / size and current[i + j] != 0 and current[i] != 0:
+    #                     if Calculator.different_sign(j, goal[current[i + j]] % size - goal[current[i]] % size):
+    #                         conflict += 1
+    #                 j += 1
+    #         if i % size == goal[current[i]] % size and current[i] != 0:
+    #             j = size
+    #             while ((j + i) / size < size):
+    #                 if (i + j) % size == goal[current[i + j]] % size and current[i + j] != 0 and current[i] != 0:
+    #                     if Calculator.different_sign(j, goal[current[i + j]] / size - goal[current[i]] / size):
+    #                         conflict += 1
+    #                 j += size
+    #     if conflict != 0:
+    #         print("Linear conflict is: \n{} \n{}".format(current_board, goal_raw))
+    #
+    #     return conflict
+

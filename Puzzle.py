@@ -20,20 +20,8 @@ class Puzzle:
         """so slow"""
         #return Calculator.euclidian_heuristic(start.data, self.goal, self.n) + start.level
 
-        linear = Calculator.linear_conflict(start.data, self.goal, self.n)
-        mylinear = 0
-        mylinear = Calculator.linear_conflict_efficient(start.data, self.goal_dict, self.n)
+        linear = Calculator.count_linear_conflict(start.data, self.goal, self.n)
         f = linear * 2 + Calculator.manhattan_distance(start.data, self.goal_dict, self.n) #+ start.level
-
-
-       # f = Calculator.manhattan_distance(start.data, self.goal_dict, self.n) + start.level
-
-        print("Linear conflict is: {}".format(linear))
-        print("my Linear conflict is: {}".format(mylinear))
-
-
-        #print("My linear conflict is: {}".format(Calculator.linear_conflict_efficient(start.data, self.goal_dict, self.n)))
-
         return f
 
         """so far the lowest  level """
